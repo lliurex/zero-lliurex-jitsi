@@ -1,0 +1,12 @@
+Source: zero-lliurex-jitsi
+Section: x11
+Priority: optional
+Maintainer: M.Angel Juan <m.angel.juan@gmail.com>
+Build-Depends: debhelper (>= 10), cdbs, zero-dev, llxsrchelper, inkscape (>= 0.47)
+Standards-Version: 4.1.2
+
+Package: zero-lliurex-jitsi
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, zero-center, epi-gtk, zero-lliurex-docker, apache2, openssl, dnsmasq, nmap, n4d, n4d-dnsmasq, bind9-host
+Description: Jitsi server configurator
+ Zero-center installer for a Jitsi server on LAN.
