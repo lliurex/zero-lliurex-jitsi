@@ -1,0 +1,9 @@
+{
+	"type":"mix",
+	"pkg_list": [{"name":"jitsi","custom_name":"Jitsi server","custom_icon":"jitsi.svg","type":"file"}], 
+	"script": {"name":"/usr/share/zero-lliurex-jitsi/jitsi-server_script","getStatus":true,"remove":true,"installPackage":true,"download":true,"preInstall":true,"postInstall":true },
+	"depends": "/usr/share/zero-lliurex-docker/docker.epi",
+	"zomando":"zero-lliurex-jitsi",
+	"custom_icon_path":"/usr/share/zero-lliurex-jitsi/",
+	"selection_enabled":{"active":true,"all_selected":true}
+}

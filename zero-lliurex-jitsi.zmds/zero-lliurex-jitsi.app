@@ -1,0 +1,16 @@
+Name=zero-lliurex-jitsi
+Name[es]=Instalador de un servidor Jitsi
+Name[en]=Jitsi server installer 
+Name[qcv]=Instal·lació del servidor Jitsi
+Name[ca_ES]=Instal·lació del servidor Jitsi
+Comment=Jitsi server installer
+Comment[es]=Asistente de instalación del servidor Jitsi
+Comment[qcv]=Auxiliar d'instal·lació del servidor Jitsi
+Comment[ca_ES]=Auxiliar d'instal·lació del servidor Jitsi
+Icon=zero-lliurex-jitsi
+Groups=admin;admins;teachers;sudo
+Category=Internet
+ScriptPath=zero-lliurex-jitsi.zmd
+Using=pkexec
+Service=True
+Modal=True
