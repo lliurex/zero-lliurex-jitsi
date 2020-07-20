@@ -1,3 +1,10 @@
+zero-lliurex-jitsi (0.1.1) bionic; urgency=medium
+
+  * Don't try to set slave dns
+  * Change Zmd app category
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Mon, 20 Jul 2020 09:43:24 +0200
+
 zero-lliurex-jitsi (0.1) unstable; urgency=medium
 
   * Initial Release.
