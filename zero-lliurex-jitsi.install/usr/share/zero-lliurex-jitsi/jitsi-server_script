@@ -16,7 +16,6 @@ ENVIRONMENT="${FILES_PATH}/environment"
 COMPOSEFILE="${FILES_PATH}/docker-compose.yml"
 SERVICEFILE="${FILES_PATH}/jitsi-server.service"
 APACHEFILE="${FILES_PATH}/apache-jitsi.conf"
-CRONTABFILE="${FILES_PATH}/jitsi-dns.crontab"
 
 CRONFILE="/etc/cron.hourly/jitsi"
 
@@ -193,10 +192,10 @@ case $ACTION in
 		echo "[Setting dns]"
 		echo $IP $USE_DOMAIN > $DNSMASQ_CONFDIR/jitsi
 		systemctl restart dnsmasq
-		cp $CRONTABFILE $CRONFILE
-		chmod +x /etc/cron.hourly/jitsi
-		echo "[Setting cron dns]"
-		bash /etc/cron.hourly/jitsi
+#		cp $CRONTABFILE $CRONFILE
+#		chmod +x /etc/cron.hourly/jitsi
+#		echo "[Setting cron dns]"
+#		bash /etc/cron.hourly/jitsi
 		echo "[Setting workdir]"
 		cp $COMPOSEFILE $RUNDIR/docker-compose.yml
 		echo "[Pulling images]"
@@ -227,11 +226,11 @@ case $ACTION in
 			rm -f $DNSMASQ_CONFDIR/jitsi
 			systemctl restart dnsmasq
 		fi
-		if [ -f "$CRONFILE" ]; then
-			echo "[Removing cron dns]"
-			bash $CRONFILE remove
-			rm -f $CRONFILE
-		fi
+#		if [ -f "$CRONFILE" ]; then
+#			echo "[Removing cron dns]"
+#			bash $CRONFILE remove
+#			rm -f $CRONFILE
+#		fi
 		if [ -f "/etc/systemd/system/jitsi-server.service" ];then
 			echo "[Removing service]"
 			rm -f /etc/systemd/system/jitsi-server.service
