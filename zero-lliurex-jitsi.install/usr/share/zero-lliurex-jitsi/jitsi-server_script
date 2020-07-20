@@ -206,7 +206,7 @@ case $ACTION in
 		systemctl enable jitsi-server
 		echo "[Setting http server configuration]"
 		cp $APACHEFILE $APACHE_CONFDIR/jitsi.conf
-		a2enmod ssl proxy proxy_http
+		a2enmod ssl proxy proxy_http headers
 		a2ensite jitsi
 		systemctl restart apache2	
 		echo " * * Finished * * "
