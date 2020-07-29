@@ -171,6 +171,10 @@ case $ACTION in
 			mv $RUNDIR /var/tmp/jitsi-server.$date
 			mkdir -p $RUNDIR
 		fi
+		if [ $? -ne 0 ];then
+		    echo "Unable to create $RUNDIR"
+		    exit 1
+		fi
 		echo "Running ${ACTION} on zero-lliurex-jitsi"
 		echo "[Setting configuration]"
 		if get_ip; then
@@ -178,20 +182,28 @@ case $ACTION in
 			echo "Using ip $IP"
 			sed -r "s/DOCKER_HOST_ADDRESS[ ]*=[ ]*.*$/DOCKER_HOST_ADDRESS=$IP/g" $ENVIRONMENT > $RUNDIR/.env 
 		else
-			echo ' **** Error setting IP, 10.3.0.254 needed **** '
+			echo ' **** Error setting IP, 10.3.0.254 needed and not detected **** '
+			echo ' **** Maybe this server is not a master server ****'
+			exit 1
 		fi
-		sed -r -i "s/PUBLIC_URL[ ]*=[ ]*.*$/PUBLIC_URL=$USE_DOMAIN/g" $RUNDIR/.env
-		sed -r -i "s%CONFIG[ ]*=[ ]*.*%CONFIG=$RUNDIR%g" $RUNDIR/.env
-		KEYS="JICOFO_COMPONENT_SECRET JICOFO_AUTH_PASSWORD JVB_AUTH_PASSWORD JIGASI_XMPP_PASSWORD JIBRI_RECORDER_PASSWORD JIBRI_XMPP_PASSWORD"
-		for KEY in $KEYS; do
+		if [ -f "$RUNDIR/.env" ]; then
+		    sed -r -i "s/PUBLIC_URL[ ]*=[ ]*.*$/PUBLIC_URL=$USE_DOMAIN/g" $RUNDIR/.env
+		    sed -r -i "s%CONFIG[ ]*=[ ]*.*%CONFIG=$RUNDIR%g" $RUNDIR/.env
+
+		    KEYS="JICOFO_COMPONENT_SECRET JICOFO_AUTH_PASSWORD JVB_AUTH_PASSWORD JIGASI_XMPP_PASSWORD JIBRI_RECORDER_PASSWORD JIBRI_XMPP_PASSWORD"
+		    for KEY in $KEYS; do
 			RAND=$(openssl rand -hex 16)
 			sed -r -i "s/$KEY[ ]*=[ ]*.*$/$KEY=$RAND/g" $RUNDIR/.env
-		done
-		sed -r -i "s/HTTP_PORT[ ]*=[ ]*.*$/HTTP_PORT=81/g" $RUNDIR/.env
-		sed -r -i "s/HTTPS_PORT[ ]*=[ ]*.*$/HTTPS_PORT=82/g" $RUNDIR/.env
-		echo "[Setting dns]"
-		echo $IP $USE_DOMAIN > $DNSMASQ_CONFDIR/jitsi
-		systemctl restart dnsmasq
+		    done
+		    sed -r -i "s/HTTP_PORT[ ]*=[ ]*.*$/HTTP_PORT=81/g" $RUNDIR/.env
+		    sed -r -i "s/HTTPS_PORT[ ]*=[ ]*.*$/HTTPS_PORT=82/g" $RUNDIR/.env
+		fi
+		DNSMASQ="$(which dnsmasq)"
+		if [ -n "$DNSMASQ" -a -d "$DNSMASQ_CONFDIR" ]; then
+		    echo "[Setting dns]"
+		    echo $IP $USE_DOMAIN > $DNSMASQ_CONFDIR/jitsi
+		    systemctl restart dnsmasq
+		fi
 #		cp $CRONTABFILE $CRONFILE
 #		chmod +x /etc/cron.hourly/jitsi
 #		echo "[Setting cron dns]"
@@ -204,23 +216,31 @@ case $ACTION in
 		cp $SERVICEFILE /etc/systemd/system
 		systemctl daemon-reload
 		systemctl enable jitsi-server
-		echo "[Setting http server configuration]"
-		cp $APACHEFILE $APACHE_CONFDIR/jitsi.conf
-		a2enmod ssl proxy proxy_http headers
-		a2ensite jitsi
-		systemctl restart apache2	
+		A2MOD="$(which a2enmod)"
+		A2SITE="$(which a2ensite)"
+		if [ -n "$A2MOD" -a -n "$A2SITE" -a -d "$APACHE_CONFDIR" ]; then
+		    echo "[Setting http server configuration]"
+		    cp $APACHEFILE $APACHE_CONFDIR/jitsi.conf
+		    a2enmod ssl proxy proxy_http headers
+		    a2ensite jitsi
+		    systemctl restart apache2
+		fi
 		echo " * * Finished * * "
 	;;
 	remove)
 		echo "Running ${ACTION} on zero-lliurex-jitsi"
 		echo "[Stopping service]"
 		systemctl stop jitsi-server
-		echo "[Removing containers]"
-		$COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env down
+		if [ -d "$RUNDIR" -a -f "$RUNDIR/.env" -a -f "$RUNDIR/docker-compose.yml" ];then
+		    echo "[Removing containers]"
+		    $COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env down
+		fi
 		remove_containers
 		remove_images
-		echo "[Backing up workdir to /var/tmp]"
-		mv $RUNDIR /var/tmp/jitsi-server.$date
+		if [ -d "$RUNDIR" ];then
+		    echo "[Backing up workdir to /var/tmp]"
+		    mv $RUNDIR /var/tmp/jitsi-server.$date
+		fi
 		if [ -f "$DNSMASQ_CONFDIR/jitsi" ];then
 			echo "[Removing dns]"
 			rm -f $DNSMASQ_CONFDIR/jitsi
