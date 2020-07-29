@@ -26,230 +26,250 @@ IMAGES="jitsi/jvb jitsi/web jitsi/prosody jitsi/jicofo"
 date=$(date +%Y%M%d%H%M)
 
 get_ip(){
-	IPS=$(ip a s | egrep -o "10\.3\.[0-9]+\.[0-9]+" | xargs)
-	IP=""
-	# FIRST=""
-	if [ -n "$IPS" ];then
-		for ip in $IPS; do
-	# 		if [ -z "$FIRST" ];then
-	# 			FIRST=$ip
-	# 		fi
-	 		if [ "$ip" == "10.3.0.254" ];then
-	 			IP=$ip
-	 		fi
-	 	done
-	# 	if [ -n "$IP" ]; then
-	# 		RET="$IP"
-	# 		return 0
-	# 	else
-	# 		if [ -n "$FIRST" ];then
-	# 			RET="$FIRST"
-	# 			return 0
-	# 		fi
-	# 	fi
-	fi
-	# IPS=$(ip a s | egrep -o "10\.2\.[0-9]+\.[0-9]+" | xargs)
-	# IP=""
-	# FIRST=""
-	# if [ -n "$IPS" ];then
-	# 	for ip in $IPS; do
-	# 		if [ -z "$FIRST" ];then
-	# 			FIRST=$ip
-	# 		fi
-	# 		if [ "$ip" == "10.2.0.254" ];then
-	# 			IP=$ip
-	# 		fi
-	# 	done
-	# 	if [ -n "$IP" ]; then
-	# 		RET="$IP"
-	# 		return 0
-	# 	else
-	# 		if [ -n "$FIRST" ];then
-	# 			RET="$FIRST"
-	# 			return 0
-	# 		fi
-	# 	fi
-	# fi
-	# X=$(seq 0 3 | xargs)
-	# IFACE=""
-	# IP=""
-	# for x in $X; do
-	# 	IFACES="$(cat /proc/net/dev|tail -n +3|cut -d: -f1|egrep -v "lo|docker"|egrep "$x\$"|sort|xargs)"
-	# 	if [ -n "$IFACES" ];then
-	# 		for iface in $IFACES; do
-	# 			if [ -n "$iface" -a -z "$IP" ];then
-	# 				IP="$(ip a s $iface |grep inet|head -1|xargs|cut -d' ' -f2|cut -d/ -f1)"
-	# 				IFACE="$iface"
-	# 			fi
-	# 		done
-	# 	fi
-	# done
-	# if [ -n "$IP" ];then
-	# 	RET="$IP"
-	# 	return 0
-	# fi
-	# IFACE=""
-	# IP=""
-	# for x in $X; do
-	# 	IFACES="$(cat /proc/net/dev|tail -n +3|cut -d: -f1|egrep -v "lo|docker"|sort|xargs)"
-	# 	if [ -n "$IFACES" ];then
-	# 		for iface in $IFACES; do
-	# 			if [ -n "$iface" -a -z "$IP" ];then
-	# 				IP="$(ip a s $iface |grep inet|head -1|xargs|cut -d' ' -f2|cut -d/ -f1)"
-	# 				IFACE="$iface"
-	# 			fi
-	# 		done
-	# 	fi
-	# done
-	if [ -n "$IP" ];then
-		RET="$IP"
-		return 0
-	else
-		return 1
-	fi
+    IPS=$(ip a s | egrep -o "10\.3\.[0-9]+\.[0-9]+" | xargs)
+    IP=""
+    # FIRST=""
+    if [ -n "$IPS" ];then
+        for ip in $IPS; do
+    # 		if [ -z "$FIRST" ];then
+    # 			FIRST=$ip
+    # 		fi
+             if [ "$ip" == "10.3.0.254" ];then
+                 IP=$ip
+             fi
+         done
+    # 	if [ -n "$IP" ]; then
+    # 		RET="$IP"
+    # 		return 0
+    # 	else
+    # 		if [ -n "$FIRST" ];then
+    # 			RET="$FIRST"
+    # 			return 0
+    # 		fi
+    # 	fi
+    fi
+    # IPS=$(ip a s | egrep -o "10\.2\.[0-9]+\.[0-9]+" | xargs)
+    # IP=""
+    # FIRST=""
+    # if [ -n "$IPS" ];then
+    # 	for ip in $IPS; do
+    # 		if [ -z "$FIRST" ];then
+    # 			FIRST=$ip
+    # 		fi
+    # 		if [ "$ip" == "10.2.0.254" ];then
+    # 			IP=$ip
+    # 		fi
+    # 	done
+    # 	if [ -n "$IP" ]; then
+    # 		RET="$IP"
+    # 		return 0
+    # 	else
+    # 		if [ -n "$FIRST" ];then
+    # 			RET="$FIRST"
+    # 			return 0
+    # 		fi
+    # 	fi
+    # fi
+    # X=$(seq 0 3 | xargs)
+    # IFACE=""
+    # IP=""
+    # for x in $X; do
+    # 	IFACES="$(cat /proc/net/dev|tail -n +3|cut -d: -f1|egrep -v "lo|docker"|egrep "$x\$"|sort|xargs)"
+    # 	if [ -n "$IFACES" ];then
+    # 		for iface in $IFACES; do
+    # 			if [ -n "$iface" -a -z "$IP" ];then
+    # 				IP="$(ip a s $iface |grep inet|head -1|xargs|cut -d' ' -f2|cut -d/ -f1)"
+    # 				IFACE="$iface"
+    # 			fi
+    # 		done
+    # 	fi
+    # done
+    # if [ -n "$IP" ];then
+    # 	RET="$IP"
+    # 	return 0
+    # fi
+    # IFACE=""
+    # IP=""
+    # for x in $X; do
+    # 	IFACES="$(cat /proc/net/dev|tail -n +3|cut -d: -f1|egrep -v "lo|docker"|sort|xargs)"
+    # 	if [ -n "$IFACES" ];then
+    # 		for iface in $IFACES; do
+    # 			if [ -n "$iface" -a -z "$IP" ];then
+    # 				IP="$(ip a s $iface |grep inet|head -1|xargs|cut -d' ' -f2|cut -d/ -f1)"
+    # 				IFACE="$iface"
+    # 			fi
+    # 		done
+    # 	fi
+    # done
+    if [ -n "$IP" ];then
+        RET="$IP"
+        return 0
+    else
+        return 1
+    fi
 }
 check_images(){
-	for img in $IMAGES; do
-		NAME="$(docker images --format "{{.Repository}}" -freference="$img" 2>/dev/null)"
-		if [ -z "$NAME" ];then
-			return 1
-		fi
-	done
-	return 0
+    for img in $IMAGES; do
+        NAME="$(docker images --format "{{.Repository}}" -freference="$img" 2>/dev/null)"
+        if [ -z "$NAME" ];then
+            return 1
+        fi
+    done
+    return 0
 }
 remove_images(){
-	for img in $IMAGES; do
-		found="$(docker images --format "{{.Repository}}" -freference="$img")"
-		if [ "$found" == "$img" ]; then
-			docker rmi -f $img >/dev/null 2>/dev/null
-			if [ $? -ne 0 ];then
-				return 1
-			fi
-		fi
-	done
-	return 0
+    for img in $IMAGES; do
+        found="$(docker images --format "{{.Repository}}" -freference="$img")"
+        if [ "$found" == "$img" ]; then
+            docker rmi -f $img >/dev/null 2>/dev/null
+            if [ $? -ne 0 ];then
+                return 1
+            fi
+        fi
+    done
+    return 0
 }
 remove_containers(){
-	for img in $IMAGES; do
-		found="$(docker ps -a -fancestor="$img" --format "{{.Names}}")"
-		if [ -n "$found" ]; then
-			docker rm -f $found >/dev/null 2>/dev/null
-			if [ $? -ne 0 ];then
-				return 1
-			fi
-		fi
-	done
-	return 0
+    for img in $IMAGES; do
+        found="$(docker ps -a -fancestor="$img" --format "{{.Names}}")"
+        if [ -n "$found" ]; then
+            docker rm -f $found >/dev/null 2>/dev/null
+            if [ $? -ne 0 ];then
+                return 1
+            fi
+        fi
+    done
+    return 0
 }
 case $ACTION in
-	getStatus)
-		if [[ "${PACKAGE_LIST[*]}" =~ "jitsi" ]]; then
-			if ! check_images; then
-				echo 1
-			else
-				if [ -d "$RUNDIR" -a -f "$RUNDIR/.env" -a -f "$RUNDIR/docker-compose.yml" -a -f "$DNSMASQ_CONFDIR/jitsi" -a -f "$APACHE_CONFDIR/jitsi.conf" ];then
-					echo 0
-				else
-					echo 1
-				fi
-			fi
-		else
-			echo "Not found"
-		fi
-		echo 0
-	;;
-	download)
-		# echo "Running ${ACTION} on zero-lliurex-jitsi"
-	;;
-	preInstall)
-		# echo "Running ${ACTION} on zero-lliurex-jitsi"
-	;;
-	installPackage)
-		if [ ! -d $RUNDIR ]; then
-			mkdir -p $RUNDIR
-		else
-			mv $RUNDIR /var/tmp/jitsi-server.$date
-			mkdir -p $RUNDIR
-		fi
-		echo "Running ${ACTION} on zero-lliurex-jitsi"
-		echo "[Setting configuration]"
-		if get_ip; then
-			IP=$RET
-			echo "Using ip $IP"
-			sed -r "s/DOCKER_HOST_ADDRESS[ ]*=[ ]*.*$/DOCKER_HOST_ADDRESS=$IP/g" $ENVIRONMENT > $RUNDIR/.env 
-		else
-			echo ' **** Error setting IP, 10.3.0.254 needed **** '
-		fi
-		sed -r -i "s/PUBLIC_URL[ ]*=[ ]*.*$/PUBLIC_URL=$USE_DOMAIN/g" $RUNDIR/.env
-		sed -r -i "s%CONFIG[ ]*=[ ]*.*%CONFIG=$RUNDIR%g" $RUNDIR/.env
-		KEYS="JICOFO_COMPONENT_SECRET JICOFO_AUTH_PASSWORD JVB_AUTH_PASSWORD JIGASI_XMPP_PASSWORD JIBRI_RECORDER_PASSWORD JIBRI_XMPP_PASSWORD"
-		for KEY in $KEYS; do
-			RAND=$(openssl rand -hex 16)
-			sed -r -i "s/$KEY[ ]*=[ ]*.*$/$KEY=$RAND/g" $RUNDIR/.env
-		done
-		sed -r -i "s/HTTP_PORT[ ]*=[ ]*.*$/HTTP_PORT=81/g" $RUNDIR/.env
-		sed -r -i "s/HTTPS_PORT[ ]*=[ ]*.*$/HTTPS_PORT=82/g" $RUNDIR/.env
-		echo "[Setting dns]"
-		echo $IP $USE_DOMAIN > $DNSMASQ_CONFDIR/jitsi
-		systemctl restart dnsmasq
+    getStatus)
+        if [[ "${PACKAGE_LIST[*]}" =~ "jitsi" ]]; then
+            if ! check_images; then
+                echo 1
+            else
+                if [ -d "$RUNDIR" -a -f "$RUNDIR/.env" -a -f "$RUNDIR/docker-compose.yml" -a -f "$DNSMASQ_CONFDIR/jitsi" -a -f "$APACHE_CONFDIR/jitsi.conf" ];then
+                    echo 0
+                else
+                    echo 1
+                fi
+            fi
+        else
+            echo "Not found"
+        fi
+        echo 0
+    ;;
+    download)
+        # echo "Running ${ACTION} on zero-lliurex-jitsi"
+    ;;
+    preInstall)
+        # echo "Running ${ACTION} on zero-lliurex-jitsi"
+    ;;
+    installPackage)
+        if [ ! -d $RUNDIR ]; then
+            mkdir -p $RUNDIR
+        else
+            mv $RUNDIR /var/tmp/jitsi-server.$date
+            mkdir -p $RUNDIR
+        fi
+        if [ $? -ne 0 ];then
+            echo "Unable to create $RUNDIR"
+            exit 1
+        fi
+        echo "Running ${ACTION} on zero-lliurex-jitsi"
+        echo "[Setting configuration]"
+        if get_ip; then
+            IP=$RET
+            echo "Using ip $IP"
+            sed -r "s/DOCKER_HOST_ADDRESS[ ]*=[ ]*.*$/DOCKER_HOST_ADDRESS=$IP/g" $ENVIRONMENT > $RUNDIR/.env 
+        else
+            echo ' **** Error setting IP, 10.3.0.254 needed and not detected **** '
+            echo ' **** Maybe this server is not a master server ****'
+            exit 1
+        fi
+        if [ -f "$RUNDIR/.env" ]; then
+            sed -r -i "s/PUBLIC_URL[ ]*=[ ]*.*$/PUBLIC_URL=$USE_DOMAIN/g" $RUNDIR/.env
+            sed -r -i "s%CONFIG[ ]*=[ ]*.*%CONFIG=$RUNDIR%g" $RUNDIR/.env
+
+            KEYS="JICOFO_COMPONENT_SECRET JICOFO_AUTH_PASSWORD JVB_AUTH_PASSWORD JIGASI_XMPP_PASSWORD JIBRI_RECORDER_PASSWORD JIBRI_XMPP_PASSWORD"
+            for KEY in $KEYS; do
+            RAND=$(openssl rand -hex 16)
+            sed -r -i "s/$KEY[ ]*=[ ]*.*$/$KEY=$RAND/g" $RUNDIR/.env
+            done
+            sed -r -i "s/HTTP_PORT[ ]*=[ ]*.*$/HTTP_PORT=81/g" $RUNDIR/.env
+            sed -r -i "s/HTTPS_PORT[ ]*=[ ]*.*$/HTTPS_PORT=82/g" $RUNDIR/.env
+        fi
+        DNSMASQ="$(which dnsmasq)"
+        if [ -n "$DNSMASQ" -a -d "$DNSMASQ_CONFDIR" ]; then
+            echo "[Setting dns]"
+            echo $IP $USE_DOMAIN > $DNSMASQ_CONFDIR/jitsi
+            systemctl restart dnsmasq
+        fi
 #		cp $CRONTABFILE $CRONFILE
 #		chmod +x /etc/cron.hourly/jitsi
 #		echo "[Setting cron dns]"
 #		bash /etc/cron.hourly/jitsi
-		echo "[Setting workdir]"
-		cp $COMPOSEFILE $RUNDIR/docker-compose.yml
-		echo "[Pulling images]"
-		$COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env pull
-		echo "[Setting service]"
-		cp $SERVICEFILE /etc/systemd/system
-		systemctl daemon-reload
-		systemctl enable jitsi-server
-		echo "[Setting http server configuration]"
-		cp $APACHEFILE $APACHE_CONFDIR/jitsi.conf
-		a2enmod ssl proxy proxy_http headers
-		a2ensite jitsi
-		systemctl restart apache2	
-		echo " * * Finished * * "
-	;;
-	remove)
-		echo "Running ${ACTION} on zero-lliurex-jitsi"
-		echo "[Stopping service]"
-		systemctl stop jitsi-server
-		echo "[Removing containers]"
-		$COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env down
-		remove_containers
-		remove_images
-		echo "[Backing up workdir to /var/tmp]"
-		mv $RUNDIR /var/tmp/jitsi-server.$date
-		if [ -f "$DNSMASQ_CONFDIR/jitsi" ];then
-			echo "[Removing dns]"
-			rm -f $DNSMASQ_CONFDIR/jitsi
-			systemctl restart dnsmasq
-		fi
+        echo "[Setting workdir]"
+        cp $COMPOSEFILE $RUNDIR/docker-compose.yml
+        echo "[Pulling images]"
+        $COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env pull
+        echo "[Setting service]"
+        cp $SERVICEFILE /etc/systemd/system
+        systemctl daemon-reload
+        systemctl enable jitsi-server
+        A2MOD="$(which a2enmod)"
+        A2SITE="$(which a2ensite)"
+        if [ -n "$A2MOD" -a -n "$A2SITE" -a -d "$APACHE_CONFDIR" ]; then
+            echo "[Setting http server configuration]"
+            cp $APACHEFILE $APACHE_CONFDIR/jitsi.conf
+            a2enmod ssl proxy proxy_http headers
+            a2ensite jitsi
+            systemctl restart apache2
+        fi
+        echo " * * Finished * * "
+    ;;
+    remove)
+        echo "Running ${ACTION} on zero-lliurex-jitsi"
+        echo "[Stopping service]"
+        systemctl stop jitsi-server
+        if [ -d "$RUNDIR" -a -f "$RUNDIR/.env" -a -f "$RUNDIR/docker-compose.yml" ];then
+            echo "[Removing containers]"
+            $COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env down
+        fi
+        remove_containers
+        remove_images
+        if [ -d "$RUNDIR" ];then
+            echo "[Backing up workdir to /var/tmp]"
+            mv $RUNDIR /var/tmp/jitsi-server.$date
+        fi
+        if [ -f "$DNSMASQ_CONFDIR/jitsi" ];then
+            echo "[Removing dns]"
+            rm -f $DNSMASQ_CONFDIR/jitsi
+            systemctl restart dnsmasq
+        fi
 #		if [ -f "$CRONFILE" ]; then
 #			echo "[Removing cron dns]"
 #			bash $CRONFILE remove
 #			rm -f $CRONFILE
 #		fi
-		if [ -f "/etc/systemd/system/jitsi-server.service" ];then
-			echo "[Removing service]"
-			rm -f /etc/systemd/system/jitsi-server.service
-			systemctl daemon-reload 
-		fi
-		if [ -f "$APACHE_CONFDIR/jitsi.conf" ];then
-			echo "[Removing http server configuration]"
-			a2dissite jitsi
-			rm -f $APACHE_CONFDIR/jitsi.conf
-			systemctl restart apache2
-		fi
-		echo " * * Finished * * "
-	;;
-	postInstall)
-		echo "Running ${ACTION} on zero-lliurex-jitsi"
-		echo "[Starting first time]"
-		systemctl start jitsi-server
-		#$COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env up -d
-	;;
+        if [ -f "/etc/systemd/system/jitsi-server.service" ];then
+            echo "[Removing service]"
+            rm -f /etc/systemd/system/jitsi-server.service
+            systemctl daemon-reload 
+        fi
+        if [ -f "$APACHE_CONFDIR/jitsi.conf" ];then
+            echo "[Removing http server configuration]"
+            a2dissite jitsi
+            rm -f $APACHE_CONFDIR/jitsi.conf
+            systemctl restart apache2
+        fi
+        echo " * * Finished * * "
+    ;;
+    postInstall)
+        echo "Running ${ACTION} on zero-lliurex-jitsi"
+        echo "[Starting first time]"
+        systemctl start jitsi-server
+        #$COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env up -d
+    ;;
 esac
 exit 0
 
