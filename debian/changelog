@@ -1,3 +1,9 @@
+zero-lliurex-jitsi (0.1.4) bionic; urgency=medium
+
+  * Remove master server installation required
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Thu, 01 Oct 2020 21:11:03 +0200
+
 zero-lliurex-jitsi (0.1.3) bionic; urgency=medium
 
   * Added install checkings 
