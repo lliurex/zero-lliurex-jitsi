@@ -2,6 +2,9 @@
 
 #set -x 
 
+PROJECT=zero-lliurex-jitsi
+_() { gettext -d "${PROJECT}" "$@"; }
+
 ACTION="$1"
 shift
 PACKAGE_LIST=$@
@@ -87,7 +90,7 @@ get_ip_interface(){
 		xtra="_(external)"
 	    fi
 
-	    options+="${ips[0]}_${phys_ifaces[${i}]} ${phys_ifaces[${i}]}_${ips[0]}${gw}${xtra} off "
+	    options+="${ips[0]}_${phys_ifaces[${i}]}${xtra} ${phys_ifaces[${i}]}_${ips[0]}${gw}${xtra} off "
 	else
 	    if [ ${#ips[@]} -gt 1 ]; then
 		for ip in ${ips[@]}; do
@@ -110,19 +113,37 @@ get_ip_interface(){
 			xtra="_(external)"
 		    fi
 
-		    options+="${ip}_${phys_ifaces[${i}]} ${phys_ifaces[${i}]}_${ip}${gw}${xtra} off "
+		    options+="${ip}_${phys_ifaces[${i}]}${xtra} ${phys_ifaces[${i}]}_${ip}${gw}${xtra} off "
 	        done
 	    fi
 	fi
     done
-    ret=$(kdialog --title "zero-lliurex-jitsi" --radiolist "Select interface:" $options)
+    msg=$(_ "Select interface")
+    ret=$(kdialog --title "zero-lliurex-jitsi" --radiolist "${msg}": $options)
     if [ -n "$ret" ];then
-	tmp=($(echo $ret|sed -r 's/^([^_]+)_(\S+)$/\1 \2/'))
+	tmp=($(echo $ret|sed -r 's/^([^_]+)_([^_]+)_(\S+)$/\1 \2 \3/'))
+	echo "'$ret' '${tmp[@]}'"
 	IP=${tmp[0]}
 	DEV=${tmp[1]}
+	tiface=${tmp[2]}
 	TYPE=$type_detected
-	echo "IP=$IP DEV=$DEV TYPE=$TYPE"
-	return 0
+	TYPE_INTERFACE="$(echo ${tiface}|tr -d '()')"
+	echo "IP=$IP DEV=$DEV TYPE=$TYPE TYPE_INTERFACE=$TYPE_INTERFACE"
+	if [ "x$TYPE_INTERFACE" != "xcenter" -a "x$TYPE_INTERFACE" != "xclass" ]; then
+	    msg1=$(_ "Warning! Clients must resolve '%s'")
+	    msg2=$(_ "Consider use a dhcp server that can be resolve '%s' or write into client file '%s' the line: '%s %s'")
+	    msgA=$(printf "$msg1" "$USE_DOMAIN")
+	    msgB=$(printf "$msg2" "$USE_DOMAIN" "/etc/hosts" "$IP" "$USE_DOMAIN")
+	    kdialog --title "zero-lliurex-jitsi" --warningcontinuecancel "<h3>${msgA}</h3>\n${msgB}"
+	    if [ $? -eq 1 ]; then
+		exit 1
+	    fi
+	fi
+	if [ -n "$IP" -a -n "$DEV" -a -n "$TYPE" -a -n "$TYPE_INTERFACE" ]; then
+	    return 0
+	else
+	    return 1
+	fi
     else
 	return 1
     fi
