@@ -1,3 +1,9 @@
+zero-lliurex-jitsi (0.1.4.1) bionic; urgency=medium
+
+  * Fix servertype checking
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Wed, 21 Oct 2020 14:08:06 +0200
+
 zero-lliurex-jitsi (0.1.4) bionic; urgency=medium
 
   * Remove master server installation required
