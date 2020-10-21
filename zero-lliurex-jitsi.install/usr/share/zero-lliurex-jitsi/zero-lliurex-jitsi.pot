@@ -17,16 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: jitsi-server_script:121
+#: zero-lliurex-jitsi/zero-lliurex-jitsi.install/usr/share/zero-lliurex-jitsi/jitsi-server_script:135
 msgid "Select interface"
 msgstr ""
 
-#: jitsi-server_script:133
+#: zero-lliurex-jitsi/zero-lliurex-jitsi.install/usr/share/zero-lliurex-jitsi/jitsi-server_script:147
 msgid "Warning! Clients must resolve '%s'"
 msgstr ""
 
-#: jitsi-server_script:134
+#: zero-lliurex-jitsi/zero-lliurex-jitsi.install/usr/share/zero-lliurex-jitsi/jitsi-server_script:148
 msgid ""
 "Consider use a dhcp server that can be resolve '%s' or write into client "
 "file '%s' the line: '%s %s'"
+msgstr ""
+
+#: zero-lliurex-jitsi/zero-lliurex-jitsi.install/usr/share/zero-lliurex-jitsi/jitsi-server_script:162
+msgid "Cancelled selection"
 msgstr ""
