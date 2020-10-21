@@ -37,24 +37,38 @@ get_ip_interface(){
     reg_slave='^10[.]3[.][0-9]{1,3}[.]1$'
     reg_independent='^10[.]2[.][0-9]{1,3}[.]254$'
     type_detected="other"
+    type_master=""
+    type_slave=""
+    type_independent=""
     for i in ${!phys_ifaces[@]}; do
 	ifaces_ips[${i}]="$(ip a s ${phys_ifaces[${i}]}|sed -r 's/^\s*+inet\s*([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\/.*$/\1/;t;d'|xargs)"
 	ips=(${ifaces_ips[${i}]})
 	echo "Detected ${#ips[@]} ip on ${phys_ifaces[${i}]}: ${ips[@]}"
 	for ip in ${ifaces_ips[${i}]}; do
 	    if [[ "$ip" =~ $reg_master ]];then
-		type_detected="master"
+		type_master="true"
 	    else
 		if [[ "$ip" =~ $reg_independent ]];then
-		    type_detected="independent"
+		    type_independent="true"
 		else
 		    if [[ "$ip" =~ $reg_slave ]];then
-			type_detected="slave"
+			type_slave="true"
 		    fi
 		fi
 	    fi
 	done
     done
+    if [ -n "$type_independent" -a -z "$type_master" -a -z "$type_slave" ]; then
+        type_detected="independent"
+    else
+        if [ -n "$type_independent" -a -n "$type_master" -a -z "$type_slave" ]; then
+            type_detected="master"
+        else
+            if [ -n "$type_independent" -a -z "$type_master" -a -n "$type_slave" ]; then
+                type_detected="slave"
+            fi
+        fi
+    fi
     echo "type = $type_detected"
     default_route_via=$(ip route get 8.8.8.8 | sed -r 's/.*dev\s+(eth\S+|enp\S+|wlan\S+)\s+.*$/\1/;t;d')
     options=""
@@ -145,7 +159,8 @@ get_ip_interface(){
 	    return 1
 	fi
     else
-	return 1
+        echo "$(_ "Cancelled selection")"
+        exit 1
     fi
 }
 check_images(){
