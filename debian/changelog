@@ -1,3 +1,9 @@
+zero-lliurex-jitsi (0.1.4.1) focal; urgency=medium
+
+  * Focal packaging
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Thu, 06 May 2021 10:18:36 +0200
+
 zero-lliurex-jitsi (0.1.4.1) bionic; urgency=medium
 
   * Fix servertype checking
