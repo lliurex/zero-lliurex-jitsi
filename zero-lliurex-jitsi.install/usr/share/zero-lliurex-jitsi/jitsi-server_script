@@ -28,6 +28,41 @@ IMAGES="jitsi/jvb jitsi/web jitsi/prosody jitsi/jicofo"
 
 date=$(date +%Y%M%d%H%M)
 
+function generatePassword(){
+    openssl rand -hex 16
+}
+
+function changePasswords(){
+    if [ -f "$1" ];then
+        return 1
+    fi
+    FILEENV=$1
+    JICOFO_COMPONENT_SECRET=$(generatePassword)
+    JICOFO_AUTH_PASSWORD=$(generatePassword)
+    JVB_AUTH_PASSWORD=$(generatePassword)
+    JIGASI_XMPP_PASSWORD=$(generatePassword)
+    JIBRI_RECORDER_PASSWORD=$(generatePassword)
+    JIBRI_XMPP_PASSWORD=$(generatePassword)
+
+    sed -i.bak \
+    -e "s#JICOFO_COMPONENT_SECRET=.*#JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}#g" \
+    -e "s#JICOFO_AUTH_PASSWORD=.*#JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}#g" \
+    -e "s#JVB_AUTH_PASSWORD=.*#JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}#g" \
+    -e "s#JIGASI_XMPP_PASSWORD=.*#JIGASI_XMPP_PASSWORD=${JIGASI_XMPP_PASSWORD}#g" \
+    -e "s#JIBRI_RECORDER_PASSWORD=.*#JIBRI_RECORDER_PASSWORD=${JIBRI_RECORDER_PASSWORD}#g" \
+    -e "s#JIBRI_XMPP_PASSWORD=.*#JIBRI_XMPP_PASSWORD=${JIBRI_XMPP_PASSWORD}#g" \
+    "$FILEENV"
+}
+
+function remove_environment_dirs(){
+    DIRS="jicofo jvb prosody transcripts web"
+    for d in $DIRS;do
+        if [ -d "${RUNDIR}/${d}" ]; then
+            rm -rf ${RUNDIR}/${d}
+        fi
+    done 
+}
+
 get_ip_interface(){
     # Get physical interfaces
     phys_ifaces=($(sed -r 's/^\s*(eth[^:]+|enp[^:]+|wlan[^:]+):.*$/\1/;t;d ' /proc/net/dev))
@@ -250,9 +285,10 @@ case $ACTION in
             RAND=$(openssl rand -hex 16)
             sed -r -i "s/$KEY[ ]*=[ ]*.*$/$KEY=$RAND/g" $RUNDIR/.env
             done
-            sed -r -i "s/HTTP_PORT[ ]*=[ ]*.*$/HTTP_PORT=81/g" $RUNDIR/.env
-            sed -r -i "s/HTTPS_PORT[ ]*=[ ]*.*$/HTTPS_PORT=82/g" $RUNDIR/.env
+            sed -r -i "s/HTTP_PORT[ ]*=[ ]*.*$/HTTP_PORT=8000/g" $RUNDIR/.env
+            sed -r -i "s/HTTPS_PORT[ ]*=[ ]*.*$/HTTPS_PORT=8443/g" $RUNDIR/.env
         fi
+        changePasswords $RUNDIR/.env
         DNSMASQ="$(which dnsmasq)"
         if [ -n "$DNSMASQ" -a -d "$DNSMASQ_CONFDIR" ]; then
             echo "[Setting dns]"
@@ -276,7 +312,7 @@ case $ACTION in
         if [ -n "$A2MOD" -a -n "$A2SITE" -a -d "$APACHE_CONFDIR" ]; then
             echo "[Setting http server configuration]"
             cp $APACHEFILE $APACHE_CONFDIR/jitsi.conf
-            a2enmod ssl proxy proxy_http headers
+            a2enmod ssl proxy proxy_http proxy_wstunnel headers rewrite 
             a2ensite jitsi
             systemctl restart apache2
         fi
@@ -288,7 +324,7 @@ case $ACTION in
         systemctl stop jitsi-server
         if [ -d "$RUNDIR" -a -f "$RUNDIR/.env" -a -f "$RUNDIR/docker-compose.yml" ];then
             echo "[Removing containers]"
-            $COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env down
+            $COMPOSE -f $RUNDIR/docker-compose.yml --env-file $RUNDIR/.env down -v
         fi
         remove_containers
         remove_images
