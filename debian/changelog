@@ -1,3 +1,9 @@
+zero-lliurex-jitsi (0.1.4.3.5765) focal; urgency=medium
+
+  * Avoid epic uninstallation problem
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Tue, 11 May 2021 10:30:14 +0200
+
 zero-lliurex-jitsi (0.1.4.2.5765) focal; urgency=medium
 
   * Websocket proxy

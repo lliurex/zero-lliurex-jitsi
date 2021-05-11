@@ -20,11 +20,16 @@ set -e
 case "$1" in
     remove|upgrade|deconfigure)
         systemctl stop jitsi-server || true
+        
+        # For now, epic can't run from debian scripts
+        # epic -u uninstall /usr/share/zero-lliurex-jitsi/jitsi-server.epi || true
+        bash /usr/share/zero-lliurex-jitsi/jitsi-server_script remove || true
+
+        zero-center set-non-configured zero-lliurex-jitsi || true
         if [ -f "/var/lib/jitsi-server/docker-compose.yml" ]; then
             docker-compose -f /var/lib/jitsi-server/docker-compose.yml down -v --remove-orphans || true
         fi
-        zero-center set-non-configured zero-lliurex-jitsi || true
-        epic -u uninstall /usr/share/zero-lliurex-jitsi/jitsi-server.epi || true
+
         if [ -d "/var/lib/jitsi-server" ]; then
             rm -rf /var/lib/jitsi-server
         fi
