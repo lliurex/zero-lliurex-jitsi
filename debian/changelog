@@ -1,3 +1,9 @@
+zero-lliurex-jitsi (0.1.4.4.1) bionic; urgency=medium
+
+  * Fix syntax for old docker-compose
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Tue, 14 Dec 2021 11:40:56 +0100
+
 zero-lliurex-jitsi (0.1.4.4) bionic; urgency=medium
 
   * Switch to latest image
