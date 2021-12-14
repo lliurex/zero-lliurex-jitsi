@@ -98,13 +98,13 @@ DOCKER_HOST_ADDRESS=10.2.1.254
 ETHERPAD_TITLE=Video Chat
 
 # The default text of a pad
-ETHERPAD_DEFAULT_PAD_TEXT=Welcome to Web Chat!\n\n
+ETHERPAD_DEFAULT_PAD_TEXT="Welcome to Web Chat!\n\n"
 
 # Name of the skin for etherpad
 ETHERPAD_SKIN_NAME=colibris
 
 # Skin variants for etherpad
-ETHERPAD_SKIN_VARIANTS=super-light-toolbar super-light-editor light-background full-width-editor
+ETHERPAD_SKIN_VARIANTS="super-light-toolbar super-light-editor light-background full-width-editor"
 
 
 #
