@@ -16,6 +16,9 @@ set -e
 
 case "$1" in
     install|upgrade)
+        if [ -f "/usr/share/zero-lliurex-jitsi/jitsi-server_script" ];then
+            bash /usr/share/zero-lliurex-jitsi/jitsi-server_script remove || true
+        fi
     ;;
 
     abort-upgrade)
