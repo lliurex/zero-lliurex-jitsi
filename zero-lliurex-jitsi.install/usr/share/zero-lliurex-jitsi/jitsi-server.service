@@ -8,6 +8,7 @@ RemainAfterExit=true
 WorkingDirectory=/var/lib/jitsi-server
 EnvironmentFile=-/var/lib/jitsi-server/.env
 TimeoutSec=60
+ExecStartPre=-/usr/bin/docker-compose pull -f /var/lib/jitsi-server/docker-compose.yml --quiet
 ExecStart=/usr/bin/docker-compose --no-ansi -f /var/lib/jitsi-server/docker-compose.yml --env-file /var/lib/jitsi-server/.env up -d --remove-orphans
 ExecStop=/usr/bin/docker-compose --no-ansi -f /var/lib/jitsi-server/docker-compose.yml --env-file /var/lib/jitsi-server/.env stop
 ExecReload=/usr/bin/docker-compose --no-ansi -f /var/lib/jitsi-server/docker-compose.yml --env-file /var/lib/jitsi-server/.env restart

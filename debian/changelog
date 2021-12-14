@@ -1,3 +1,29 @@
+zero-lliurex-jitsi (0.1.4.4) focal; urgency=medium
+
+  * Switch to latest image
+  * Reload images on service startup
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Tue, 14 Dec 2021 10:51:50 +0100
+
+zero-lliurex-jitsi (0.1.4.3.5765) focal; urgency=medium
+
+  * Avoid epic uninstallation problem
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Tue, 11 May 2021 10:30:14 +0200
+
+zero-lliurex-jitsi (0.1.4.2.5765) focal; urgency=medium
+
+  * Websocket proxy
+  * Update to 5765-1 jitsi version
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Mon, 10 May 2021 20:05:23 +0200
+
+zero-lliurex-jitsi (0.1.4.1) focal; urgency=medium
+
+  * Focal packaging
+
+ -- M.Angel Juan <m.angel.juan@gmail.com>  Thu, 06 May 2021 10:18:36 +0200
+
 zero-lliurex-jitsi (0.1.4.1) bionic; urgency=medium
 
   * Fix servertype checking
